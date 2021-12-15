@@ -16,5 +16,11 @@
         "psr-4": {
           "DiyExpress\\": "src"
         }
-      }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    }
 }
