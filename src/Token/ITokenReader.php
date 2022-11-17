@@ -14,13 +14,13 @@ namespace DiyExpress\Token;
 interface ITokenReader{
     /**
      * 返回Token流中下一个Token，并从流中取出。 如果流已经为空，返回null;
-     * @return IToken|null
+     * @return mixed 
      */
     public function read();
 
     /**
      * 返回Token流中下一个Token，但不从流中取出。 如果流已经为空，返回null;
-     * @return IToken|null
+     * @return mixed
      */
     public function peek();
 

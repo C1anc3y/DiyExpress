@@ -111,7 +111,6 @@ class SimpleFormula{
         $num = count($args) ?: 0;
         if (!$num) {
             throw new RuntimeException('Error in avg: args count num error.');
-            return 0;
         }
         $sum = array_sum($args);
         return (float)($sum / $num);

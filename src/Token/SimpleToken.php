@@ -15,7 +15,7 @@ namespace DiyExpress\Token;
 class SimpleToken implements IToken{
     /**
      * Token类型
-     * @var TokenType $type
+     * @var mixed $type
      */
     var $type = null;
 
@@ -26,7 +26,7 @@ class SimpleToken implements IToken{
     var $text = null;
 
     /**
-     * @return TokenType|null
+     * @return mixed
      */
     public function getType()
     {

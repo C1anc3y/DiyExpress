@@ -16,13 +16,13 @@ interface INode
 {
     /**
      * 父节点
-     * @return INode
+     * @return mixed INode
      */
     public function getParent();
 
     /**
      * 子节点
-     * @return INode
+     * @return mixed INode
      */
     public function getChildren();
 
@@ -30,7 +30,7 @@ interface INode
 
     /**
      * AST类型
-     * @return NodeType
+     * @return mixed NodeType
      */
     public function getType();
 

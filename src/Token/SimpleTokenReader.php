@@ -31,7 +31,7 @@ class SimpleTokenReader implements ITokenReader{
 
     /**
      * SimpleTokenReader constructor.
-     * @param array $tokens List<IToken>
+     * @param SimpleToken $tokens List<IToken>
      */
     public function __construct(array $tokens)
     {
@@ -41,7 +41,7 @@ class SimpleTokenReader implements ITokenReader{
     /**
      * 读取对应的tokens
      * @Override
-     * @return IToken|null
+     * @return SimpleToken|null
      */
     public function read()
     {
@@ -58,7 +58,7 @@ class SimpleTokenReader implements ITokenReader{
 
     /**
      * @Override
-     * @return IToken|null
+     * @return SimpleToken|null
      */
     public function peek()
     {
@@ -71,7 +71,7 @@ class SimpleTokenReader implements ITokenReader{
 
     /**
      * 预览上一个节点
-     * @return mixed|null
+     * @return SimpleToken|null
      */
     public function peekPre()
     {
@@ -86,7 +86,7 @@ class SimpleTokenReader implements ITokenReader{
 
     /**
      * 预览下一个节点
-     * @return mixed|null
+     * @return SimpleToken|null
      */
     public function peekNext()
     {
@@ -141,7 +141,7 @@ class SimpleTokenReader implements ITokenReader{
     /**
      * 获取指定的节点。
      * @param int $pos
-     * @return mixed|null
+     * @return SimpleToken|null
      */
     public function peekByPos($pos = 0)
     {

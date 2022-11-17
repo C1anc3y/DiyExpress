@@ -27,7 +27,10 @@ class SimpleParser{
      */
     public $store_list = null;
 
-    public $struct_node_list = null;
+    /**
+     * @var mixed $struct_node_list array|null
+     */
+    public $struct_node_list = [];
 
     public $parse_error_tip = null;
 
@@ -97,7 +100,7 @@ class SimpleParser{
      * 解析脚本
      * @param $script
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function parse($script): array
     {
@@ -117,7 +120,7 @@ class SimpleParser{
      * AST的根节点，解析的入口。
      * @param SimpleTokenReader $tokens
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function DiyFormulaStmtParse(SimpleTokenReader $tokens): array
     {
@@ -234,7 +237,7 @@ class SimpleParser{
      * 扫描需要解析的tokens
      * @param SimpleTokenReader $tokens
      * @return array|null
-     * @throws Exception
+     * @throws \Exception
      */
     private function scanTokens(SimpleTokenReader $tokens)
     {
@@ -282,7 +285,7 @@ class SimpleParser{
         } elseif ($this->struct_node_list) {
             current($this->struct_node_list);
             $endNode = end($this->struct_node_list);
-            if ($endNode->structPath < 0) {
+            if ($endNode->structLevel < 0) {
                 $this->parse_error_tip = '公式语法有误';
                 return null;
             }
@@ -297,7 +300,7 @@ class SimpleParser{
      * 结构规则 找到左右两个的变量或者表达式，缺失任何一个都抛错
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     private function structComputeTag(SimpleTokenReader $tokens)
     {
@@ -388,7 +391,7 @@ class SimpleParser{
      * 遇到左括号或者if条件，就重置开始 SMALL_BRACKET_LEFT、ID_IF
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     private function structSmallBracketOpen(SimpleTokenReader $tokens)
     {
@@ -424,7 +427,7 @@ class SimpleParser{
      * 闭合括号后还有未处理的tokens，需要往上回溯一层节点再继续执行scan。如果没有了，需要回溯上层并验证节点是否完成。
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     private function structSmallBracketClose(SimpleTokenReader $tokens)
     {
@@ -467,7 +470,7 @@ class SimpleParser{
      * 遇到左括号或者自身的if就重置开始 SMALL_BRACKET_LEFT、ID_IF
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     private function structIfStmt(SimpleTokenReader $tokens)
     {
@@ -497,7 +500,7 @@ class SimpleParser{
      * 普通表达式结构的处理，可能是变量，可能是数值，可能是字符串等
      * @param $tokens
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     private function structExpression($tokens)
     {

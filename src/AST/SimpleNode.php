@@ -16,7 +16,7 @@ class SimpleNode implements INode
 {
     /**
      * 父节点
-     * @var SimpleINode|null $parent
+     * @var mixed $parent SimpleINode|null
      */
     var $parent = null;
 
@@ -104,7 +104,7 @@ class SimpleNode implements INode
 
     /**
      * 添加子节点
-     * @param SimpleINode $child
+     * @param mixed $child SimpleNode
      * @return void
      */
     function addChild($child)
