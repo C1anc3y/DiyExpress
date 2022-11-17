@@ -21,6 +21,7 @@ class Calculator
     CONST MAX_LEVEL = 1000; # 最深层级，执行到该层级还未计算出结果，直接 return 0
 
     /**
+     * 验证表达式
      * @param $script_list
      * @return array|false
      * @throws \Exception
@@ -77,6 +78,13 @@ class Calculator
         return $result;
     }
 
+    /**
+     * 执行表达式
+     * @param string $token 自定义表达式，其中的变量需要用双花阔号包起来
+     * @param array $data 已知变量的赋值数组
+     * @param string|int $rule_result_filed_id 表达式的结果字段id或者标识
+     * @return mixed
+     */
     public function executeFormFormula($token, $data,$rule_result_field_id)
     {
         
@@ -91,11 +99,13 @@ class Calculator
 
         # 先把结果标记处理掉
         $res_str = str_replace('{{'.$rule_result_field_id.'}}','结果',$res_str);
-
+        // breakpoint log，输出替换结果标识后的表达式
+        var_dump($res_str);
         foreach ($data as $key=> $val){
             $res_str = str_replace('{{'.$key.'}}',$val?:0,$res_str);
         }
-
+        // breakpoint log , 输出替换变量后的表达式
+        var_dump($res_str);
         
         $nodeList = $parser->parse($res_str);
         $vmRes = $vm->scanNodeList($nodeList['data']);
