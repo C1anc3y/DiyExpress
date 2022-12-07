@@ -5,12 +5,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Clancey Huang",
+            "name": "ClanceyHuang(Kirk)",
             "email": "ClanceyHuang@outlook.com"
         }
     ],
     "require": {
-        "php": ">=7.1.0"
+        "php": ">=7.4.0"
     },
     "autoload": {
         "psr-4": {
