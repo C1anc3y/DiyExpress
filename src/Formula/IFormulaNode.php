@@ -1,24 +1,15 @@
 <?php
-/**
- * @File    :   IFormulaNode.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Formula;
 
-class IFormulaNode implements IFormula {
+class IFormulaNode implements IFormula
+{
 
-    public $structId = null;
-    public $structPid = null;
-    public $structType = null;
-    public $structText = null;
-    public $structLevel = null;
+    public ?int $structId = null;
+    public ?int $structPid = null;
+    public ?string $structType = null;
+    public ?string $structText = null;
+    public ?int $structLevel = null;
     public $structChild = null;
 
     public function __construct($structType, $structText, $structId = 0, $structPid = 0, $structLevel = 0)

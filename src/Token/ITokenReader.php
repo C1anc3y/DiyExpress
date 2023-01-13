@@ -1,20 +1,11 @@
 <?php
-/**
- * @File    :   ITokenReader.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Token;
-interface ITokenReader{
+interface ITokenReader
+{
     /**
      * 返回Token流中下一个Token，并从流中取出。 如果流已经为空，返回null;
-     * @return mixed 
+     * @return mixed
      */
     public function read();
 

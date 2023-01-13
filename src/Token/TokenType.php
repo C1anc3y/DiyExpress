@@ -1,17 +1,8 @@
 <?php
-/**
- * @File    :   TokenType.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Token;
-class TokenType{
+class TokenType
+{
     const NULL_TAG = null;
     const INT_LITERAL = 'IntLiteral';     //整型字面量
     const STRING_LITERAL = 'StringLiteral';   //字符串
@@ -63,7 +54,7 @@ class TokenType{
      * 闭合小括号的左侧能存在的字符
      * @var string[]
      */
-    public $closeSmallBracket_inLeft = [
+    public array $closeSmallBracket_inLeft = [
         self::IDENTIFIER,           # 标识符
         self::INT_LITERAL,          # 数值
         self::STRING_LITERAL,       # 字符串
@@ -84,7 +75,7 @@ class TokenType{
      * 闭合小括号的右侧能存在的字符
      * @var string[]
      */
-    public $closeSmallBracket_inRight = [
+    public array $closeSmallBracket_inRight = [
         self::IDENTIFIER,           # 标识符
         self::INT_LITERAL,          # 数值
         self::STRING_LITERAL,       # 字符串
@@ -105,7 +96,7 @@ class TokenType{
      * 开口小括号左侧能存在的字符
      * @var string[]
      */
-    public $openSmallBracket_inLeft = [
+    public array $openSmallBracket_inLeft = [
         # 小于等于，小于，大于等于，大于，双等于
         self::LE, self::LT, self::GE, self::GT, self::EQ,
         # 加减乘除
@@ -127,7 +118,7 @@ class TokenType{
      * 开口小括号右侧能存在的字符
      * @var string[]
      */
-    public $openSmallBracket_inRight = [
+    public array $openSmallBracket_inRight = [
         self::IDENTIFIER,           # 标识符
         self::INT_LITERAL,          # 数值
         self::STRING_LITERAL,       # 字符串
@@ -139,7 +130,7 @@ class TokenType{
      * 加减操作符
      * @var string[]
      */
-    public $plus_minus_op = [
+    public array $plus_minus_op = [
         self::ADDITION,
         self::SUBTRACTION
     ];
@@ -148,7 +139,7 @@ class TokenType{
      * 乘除操作符
      * @var string[]
      */
-    public $star_slash_op = [
+    public array $star_slash_op = [
         self::MULTIPLICATION,
         self::DIVISION
     ];
@@ -157,7 +148,7 @@ class TokenType{
      * 比较操作符
      * @var string[]
      */
-    public $compare_op = [
+    public array $compare_op = [
         self::LT, self::LE,
         self::GT, self::GE,
         self::EQ
@@ -167,7 +158,7 @@ class TokenType{
      * 逻辑操作符
      * @var string[]
      */
-    public $logic_op = [
+    public array $logic_op = [
         self::ID_AND,
         self::ID_OR,
     ];
@@ -176,7 +167,7 @@ class TokenType{
      * 操作符的汇总
      * @var array
      */
-    public $tag_array = [
+    public array $tag_array = [
         self::ADDITION, self::SUBTRACTION, self::MULTIPLICATION, self::DIVISION,
         self::LT, self::LE, self::GT, self::GE, self::EQ,
         self::ID_AND, self::ID_OR,

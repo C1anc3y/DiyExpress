@@ -1,20 +1,12 @@
 <?php
-/**
- * @File    :   SimpleVM.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\VM;
+
 use DiyExpress\AST\NodeType;
 use DiyExpress\Formula\IFormulaNode;
 
-class SimpleVM{
+class SimpleVM
+{
     /**
      * 扫描节点列表，并构造匹配对应的表达式
      * @param $nodeList
@@ -109,8 +101,8 @@ class SimpleVM{
                 }
                 # 处理condition、then、else
                 $ifExpress_data = $this->dealIfExpress($if_stmt_tmp);
-                if ($ifExpress_data['error_msg']){
-                    return ['error_msg'=>$ifExpress_data['error_msg']];
+                if ($ifExpress_data['error_msg']) {
+                    return ['error_msg' => $ifExpress_data['error_msg']];
                 }
 
                 $if_condition_tmp = $ifExpress_data['condition'];
@@ -133,7 +125,7 @@ class SimpleVM{
                 $if_result['condition'] = $if_condition_res_tmp['nodeList'];
                 $if_result['then'] = $if_then_res_tmp['nodeList'];
                 $if_result['else'] = $if_else_res_tmp['nodeList'];
-                $nodeList_dirty[$dirty_if_key] = new IFormulaNode('ifExpress', $if_result,$if_current_id,$if_current_pid,$if_current_level);
+                $nodeList_dirty[$dirty_if_key] = new IFormulaNode('ifExpress', $if_result, $if_current_id, $if_current_pid, $if_current_level);
                 ksort($nodeList_dirty);
             } else {
                 continue;
@@ -161,33 +153,28 @@ class SimpleVM{
                     $find_bracket_type = $find_bracket_value->structType;
                     $find_bracket_level = $find_bracket_value->structLevel;
 
-                    if (!$bracket_close){
+                    if (!$bracket_close) {
                         # 闭合括号不处理,只记录一个标记
                         if ($find_bracket_level == $bracket_level
                             && $find_bracket_type == $astNodeType::SMALL_BRACKET
                             && $find_bracket_text == ")"
-                        ){
+                        ) {
                             $bracket_close = true;
                             unset($nodeList_dirty[$bracket_current_key]);
-//                            pd($bracket_tmp);
                             $bracket_result_data = $this->scanChildStmt($bracket_tmp);
-//                            pd($bracket_result_data);
                             $bracket_result = $bracket_result_data['nodeList'];
                             if ($bracket_result_data['error_msg']) {
                                 return ['error_msg' => $bracket_result_data['error_msg']];
                             }
-                            $nodeList_dirty[$bracket_key] = new IFormulaNode('bracketExpress', $bracket_result,$bracket_id,$bracket_pid,$bracket_level);
-//                            $bracket_value = new IFormulaNode('bracketExpress', $bracket_result,$bracket_id,$bracket_pid,$bracket_level);
+                            $nodeList_dirty[$bracket_key] = new IFormulaNode('bracketExpress', $bracket_result, $bracket_id, $bracket_pid, $bracket_level);
                             continue;
-                        }
-                        elseif ($find_bracket_level == $bracket_level
+                        } elseif ($find_bracket_level == $bracket_level
                             && $find_bracket_type == $astNodeType::SMALL_BRACKET
                             && $find_bracket_text == '('
-                        ){
+                        ) {
                             unset($nodeList_dirty[$bracket_current_key]);
                             continue;
-                        }
-                        else{
+                        } else {
                             $bracket_tmp[] = $find_bracket_value;
                             unset($nodeList_dirty[$bracket_current_key]);
                         }
@@ -200,7 +187,6 @@ class SimpleVM{
                 if ($bracket_result['error_msg']) {
                     return ['error_msg' => $bracket_result['error_msg']];
                 }
-//                $nodeList[$bracket_key] = new IFormulaNode('bracketExpress', $bracket_result['nodeList']);
                 $nodeList_dirty[$bracket_key] = new IFormulaNode('bracketExpress', $bracket_result['nodeList']);
                 ksort($nodeList_dirty);
             }
@@ -263,7 +249,7 @@ class SimpleVM{
 
         # 处理 > >= < <= ==
         $compare_key_list = array_keys($nodeList_dirty);
-        foreach ($compare_key_list as $compare_key_key => $compare_key){
+        foreach ($compare_key_list as $compare_key_key => $compare_key) {
             $compare_value = $nodeList_dirty[$compare_key];
             $compare_type = $compare_value->structType;
             if (in_array($compare_type, $astNodeType->compare_tag)) {
@@ -317,10 +303,10 @@ class SimpleVM{
             }
         }
         if ($error_msg) {
-            return array('error_msg'=>$error_msg);
+            return array('error_msg' => $error_msg);
         }
         $result = array_values($nodeList_dirty)[0];
-        return array('nodeList'=>$result);
+        return array('nodeList' => $result);
     }
 
     # 处理子集表达式，并返回结果 DONE
@@ -383,8 +369,8 @@ class SimpleVM{
 
                 # 处理condition、then、else
                 $ifExpress_data = $this->dealIfExpress($if_stmt_tmp);
-                if ($ifExpress_data['error_msg']){
-                    return array('error_msg'=>$ifExpress_data['error_msg']);
+                if ($ifExpress_data['error_msg']) {
+                    return array('error_msg' => $ifExpress_data['error_msg']);
                 }
 
                 $if_condition_tmp = $ifExpress_data['condition'];
@@ -409,7 +395,7 @@ class SimpleVM{
                 $if_result['condition'] = $if_condition_res_tmp['nodeList'];
                 $if_result['then'] = $if_then_res_tmp['nodeList'];
                 $if_result['else'] = $if_else_res_tmp['nodeList'];
-                $nodeList[$if_key] = new IFormulaNode('ifExpress', $if_result,$if_current_id,$if_current_pid,$if_current_level);
+                $nodeList[$if_key] = new IFormulaNode('ifExpress', $if_result, $if_current_id, $if_current_pid, $if_current_level);
                 ksort($nodeList);
             } else {
                 continue;
@@ -437,9 +423,9 @@ class SimpleVM{
                     $find_bracket_type = $find_bracket_value->structType;
                     $find_bracket_level = $find_bracket_value->structLevel;
 
-                    if (!$bracket_close){
+                    if (!$bracket_close) {
                         # 闭合括号不处理,只记录一个标记
-                        if ($find_bracket_level == $bracket_level && $find_bracket_type == $astNodeType::SMALL_BRACKET && $find_bracket_text == ")"){
+                        if ($find_bracket_level == $bracket_level && $find_bracket_type == $astNodeType::SMALL_BRACKET && $find_bracket_text == ")") {
                             $bracket_close = true;
                             unset($nodeList[$bracket_current_key]);
                             $bracket_result_data = $this->scanChildStmt($bracket_tmp);
@@ -447,14 +433,12 @@ class SimpleVM{
                             if ($bracket_result_data['error_msg']) {
                                 return ['error_msg' => $bracket_result_data['error_msg']];
                             }
-                            $nodeList[$bracket_key] = new IFormulaNode('bracketExpress', $bracket_result,$bracket_id,$bracket_pid,$bracket_level);
+                            $nodeList[$bracket_key] = new IFormulaNode('bracketExpress', $bracket_result, $bracket_id, $bracket_pid, $bracket_level);
                             continue;
-                        }
-                        elseif ($find_bracket_level == $bracket_level && $find_bracket_type == $astNodeType::SMALL_BRACKET && $find_bracket_text == '('){
+                        } elseif ($find_bracket_level == $bracket_level && $find_bracket_type == $astNodeType::SMALL_BRACKET && $find_bracket_text == '(') {
                             unset($nodeList[$bracket_current_key]);
                             continue;
-                        }
-                        else{
+                        } else {
                             $bracket_tmp[] = $find_bracket_value;
                             unset($nodeList[$bracket_current_key]);
                         }
@@ -525,7 +509,7 @@ class SimpleVM{
 
         # 处理 比较符 > >= < <= == DONE
         $compare_key_list = array_keys($nodeList);
-        foreach ($compare_key_list as $compare_key_key => $compare_key){
+        foreach ($compare_key_list as $compare_key_key => $compare_key) {
             $compare_value = $nodeList[$compare_key];
             $compare_type = $compare_value->structType;
             if (in_array($compare_type, $astNodeType->compare_tag)) {
@@ -605,7 +589,7 @@ class SimpleVM{
                         $list_tmp = [];
 
                     } else {
-//                        # 之后的都是else
+                        # 之后的都是else
                         $comma = $comma + 1;
                         $list_tmp = [];
                     }
@@ -620,18 +604,18 @@ class SimpleVM{
             }
         }
         $condition_data = $this->scanChildStmt($condition_list);
-        if ($condition_data['error_msg']){
-            return ['error_msg'=>$condition_data['error_msg']];
+        if ($condition_data['error_msg']) {
+            return ['error_msg' => $condition_data['error_msg']];
         }
         $then_data = $this->scanChildStmt($then_list);
-        if ($then_data['error_msg']){
-            return ['error_msg'=>$then_data['error_msg']];
+        if ($then_data['error_msg']) {
+            return ['error_msg' => $then_data['error_msg']];
         }
-        $else_data =  $this->scanChildStmt($else_list);
-        if ($else_data['error_msg']){
-            return ['error_msg'=>$else_data['error_msg']];
+        $else_data = $this->scanChildStmt($else_list);
+        if ($else_data['error_msg']) {
+            return ['error_msg' => $else_data['error_msg']];
         }
-        return ['condition'=>$condition_data['nodeList'],'then'=>$then_data['nodeList'] ,'else'=>$else_data['nodeList']];
+        return ['condition' => $condition_data['nodeList'], 'then' => $then_data['nodeList'], 'else' => $else_data['nodeList']];
     }
 
 

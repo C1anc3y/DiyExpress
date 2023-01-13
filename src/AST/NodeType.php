@@ -1,20 +1,10 @@
 <?php
 
-/**
- * @File    :   NodeType.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 namespace DiyExpress\AST;
 
 class NodeType
 {
-    const PROGRAMM = "Programm";                # 程序入口，根节点
+    const PROGRAM = "Program";                # 程序入口，根节点
     const INT_DECLARATION = "IntDeclaration";   # 整型变量声明
     const EXPRESSION_STMT = 'ExpressionStmt';   # 表达式语句，即表达式后面跟个分号
     const PRIMARY = 'Primary';                  # 基础表达式
@@ -45,10 +35,6 @@ class NodeType
 
     const COMMA = 'Comma';                      # 逗号 // 这里的逗号表达式是否需要进行切割，处理成条件表达式的 判定条件、真值、假值？
 
-    //    const MULTIPLICATIVE = 'Multiplicative';    # 乘除法表达式
-    //    const ADDITIVE = 'Additive';                # 加减法表达式
-    //    const LOGIC_STMT = 'LogicStmt';             # 逻辑运算，用来给 AND OR 等节点赋类型值
-    //    const COMPARE_STMT = 'CompareStmt';         # 比较运算，用来给 >= > <= < == 等节点赋类型值
     const COMPARE_STMT_LT = 'LT';
     const COMPARE_STMT_LE = 'LE';
     const COMPARE_STMT_GT = 'GT';
@@ -74,7 +60,7 @@ class NodeType
      * 数值或者字符字面量
      * @var string[]
      */
-    public $num_char_list = [
+    public array $num_char_list = [
         self::INT_LITERAL,
         self::IDENTIFIER,
     ];
@@ -83,7 +69,7 @@ class NodeType
      * 高级运算符
      * @var string[]
      */
-    public $high_tag = [
+    public array $high_tag = [
         self::MULTIPLICATION,
         self::DIVISION
     ];
@@ -91,7 +77,7 @@ class NodeType
      * 低级运算符
      * @var string[]
      */
-    public $low_tag = [
+    public array $low_tag = [
         self::ADDITION,
         self::SUBTRACTION
     ];
@@ -99,7 +85,7 @@ class NodeType
      * 比较符
      * @var string[]
      */
-    public $compare_tag = [
+    public array $compare_tag = [
         self::COMPARE_STMT_EQ,
         self::COMPARE_STMT_GE,
         self::COMPARE_STMT_GT,
@@ -110,7 +96,7 @@ class NodeType
      * 逻辑符
      * @var string[]
      */
-    public $logic_tag = [
+    public array $logic_tag = [
         self::ID_AND,
         self::ID_OR,
     ];

@@ -1,15 +1,5 @@
 <?php
 
-/**
- * @File    :   SimpleNode.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 namespace DiyExpress\AST;
 
 class SimpleNode implements INode
@@ -41,9 +31,9 @@ class SimpleNode implements INode
      * 文本值
      * @var null|string
      */
-    var $text = null;
+    public ?string $text = null;
 
-    var $level = 0;
+    public int $level = 0;
 
     /**
      * 初始化节点

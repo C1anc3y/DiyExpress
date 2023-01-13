@@ -1,16 +1,8 @@
 <?php
-/**
- * @File    :   State.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
 
 namespace DiyExpress\DFA;
-class State{
+class State
+{
     const INITIAL = 'Initial';              # 初始状态
     const INT_LITERAL = 'IntLiteral';       # 数值
     const VALUE_STRING = 'Value_string';    # 字符串

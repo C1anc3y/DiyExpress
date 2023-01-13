@@ -1,47 +1,39 @@
 <?php
-/**
- * @File    :   SimpleLexer.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Lexer;
+
 use DiyExpress\Dfa\State;
 use DiyExpress\Token\TokenType;
 use DiyExpress\Token\SimpleToken;
 use DiyExpress\Token\SimpleTokenReader;
 use DiyExpress\Exception\ParseException;
+
 class SimpleLexer
 {
 
-    /** 
+    /**
      * 临时保存token的文本
      * @var string $tokenText
      */
-    public $tokenText = null;
+    public ?string $tokenText = null;
 
     /**
      * 保存解析出来的Token
      * @var array $tokens
      */
-    public $tokens = null;
+    public ?array $tokens = null;
 
     /**
      * 当前正在解析的Token
      * @var SimpleToken $token
      */
-    public $token = null;
+    public ?SimpleToken $token = null;
 
     /**
      * 记录 token 和 type 的关系
      * @var null|array $tokenList
      */
-    public $tokenList = null;
+    public ?array $tokenList = null;
 
     /**
      * 是否是字母
@@ -118,8 +110,7 @@ class SimpleLexer
                             if ($this->isAlpha($ch) || $this->isDigit($ch) || $this->isChinese($ch)) {
                                 # 保持标识符状态
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 # 退出标识符状态，并保存Token
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
@@ -130,21 +121,20 @@ class SimpleLexer
                                 $SimpleToken->type = TokenType::GE;
                                 $state = State::GE;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 # 退出GT状态，并保存Token
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
                         case State::GE:
                         case State::LT:
-                            if ($ch == '='){
+                            if ($ch == '=') {
                                 # 转换成LE
                                 $SimpleToken->type = TokenType::LE;
                                 $state = State::LE;
                                 $this->tokenText .= $ch;
-                            }else{
-                                $state = $this->initToken($SimpleToken,$ch);
+                            } else {
+                                $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
                         case State::LE:
@@ -207,12 +197,10 @@ class SimpleLexer
                             if ($ch == 'N' || $ch == 'n') {
                                 $state = State::ID_AND2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif($ch == 'V' || $ch == 'v'){
+                            } elseif ($ch == 'V' || $ch == 'v') {
                                 $state = State::ID_AVG2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             } else {
@@ -223,12 +211,10 @@ class SimpleLexer
                             if ($ch == 'D' || $ch == 'd') {
                                 $state = State::ID_AND3;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -236,32 +222,28 @@ class SimpleLexer
                             if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_AND;
                                 $state = $this->initToken($SimpleToken, $ch);
-                            }
-                            else {
+                            } else {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             }
                             break;
                         case State::ID_AVG2:
-                            if ($ch == 'G' || $ch == 'g'){
+                            if ($ch == 'G' || $ch == 'g') {
                                 $SimpleToken->type = TokenType::ID_AVG;
-                                $state = $this->initToken($SimpleToken,$ch);
-                            }
-                            else{
+                                $state = $this->initToken($SimpleToken, $ch);
+                            } else {
                                 $state = State::IDENTIFIER;
-                                $this->tokenText .=$ch;
+                                $this->tokenText .= $ch;
                             }
                             break;
                         case State::ID_OR1:
                             if ($ch == 'R' || $ch == 'r') {
                                 $state = State::ID_OR2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -269,8 +251,7 @@ class SimpleLexer
                             if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_OR;
                                 $state = $this->initToken($SimpleToken, $ch);
-                            }
-                            else {
+                            } else {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             }
@@ -279,16 +260,13 @@ class SimpleLexer
                             if ($ch == 'f' || $ch == 'F') {
                                 $state = State::ID_IF2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($ch == 'n' || $ch == 'N') {
+                            } elseif ($ch == 'n' || $ch == 'N') {
                                 $state = State::ID_IN2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -296,8 +274,7 @@ class SimpleLexer
                             if ($this->isBlank($ch) || $ch == '(') {
                                 $SimpleToken->type = TokenType::ID_IF;
                                 $state = $this->initToken($SimpleToken, $ch);
-                            }
-                            else {
+                            } else {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             }
@@ -306,12 +283,10 @@ class SimpleLexer
                             if ($ch == 'L' || $ch == 'l') {
                                 $state = State::ID_ELSE2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -319,12 +294,10 @@ class SimpleLexer
                             if ($ch == 'S' || $ch == 's') {
                                 $state = State::ID_ELSE3;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -332,12 +305,10 @@ class SimpleLexer
                             if ($ch == 'E' || $ch == 'e') {
                                 $state = State::ID_ELSE4;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -345,8 +316,7 @@ class SimpleLexer
                             if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_ELSE;
                                 $state = $this->initToken($SimpleToken, $ch);
-                            }
-                            else {
+                            } else {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             }
@@ -355,8 +325,7 @@ class SimpleLexer
                             if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_IN;
                                 $state = $this->initToken($SimpleToken, $ch);
-                            }
-                            else {
+                            } else {
                                 # 切换回Id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
@@ -366,13 +335,11 @@ class SimpleLexer
                             if ($ch == 'n') {
                                 $state = State::ID_INT2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回Id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -380,13 +347,11 @@ class SimpleLexer
                             if ($ch == 't') {
                                 $state = State::ID_INT3;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else {
+                            } else {
                                 $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
@@ -394,116 +359,101 @@ class SimpleLexer
                             if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_INT;
                                 $state = $this->initToken($SimpleToken, $ch);
-                            }
-                            else {
+                            } else {
                                 # 切换回Id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             }
                             break;
                         case State::ID_MAX1:
-                            if ($ch == 'A' || $ch == 'a'){
+                            if ($ch == 'A' || $ch == 'a') {
                                 $state = State::ID_MAX2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif($ch == 'I' || $ch == 'i'){
+                            } elseif ($ch == 'I' || $ch == 'i') {
                                 $state = State::ID_MIN2;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            } else{
+                            } else {
                                 $this->initToken($SimpleToken, $ch);
                             }
                             break;
                         case State::ID_MAX2:
-                            if ($ch == 'X' || $ch == 'x'){
+                            if ($ch == 'X' || $ch == 'x') {
                                 $state = State::ID_MAX3;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else{
+                            } else {
                                 $this->initToken($SimpleToken, $ch);
                             }
                             break;
                         case State::ID_MAX3:
-                            if ($this->isBlank($ch)){
+                            if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_MAX;
                                 $state = $this->initToken($SimpleToken, $ch);
-                            }
-                            else{
+                            } else {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             }
                             break;
                         case State::ID_MIN2:
-                            if ($ch == 'N' || $ch == 'n'){
+                            if ($ch == 'N' || $ch == 'n') {
                                 $state = State::ID_MIN3;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回id状态
                                 $state = State::IDENTIFIER;
-                            }
-                            else{
+                            } else {
                                 $state = State::IDENTIFIER;
                             }
                             $this->tokenText .= $ch;
                             break;
                         case State::ID_MIN3:
-                            if ($this->isBlank($ch)){
+                            if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_MIN;
-                                $state = $this->initToken($SimpleToken,$ch);
-                            }
-                            else{
+                                $state = $this->initToken($SimpleToken, $ch);
+                            } else {
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
                             }
                             break;
                         case State::ID_SUM1:
-                            if ($ch == 'U' || $ch == 'u'){
+                            if ($ch == 'U' || $ch == 'u') {
                                 $state = State::ID_SUM2;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回id状态
                                 $state = State::IDENTIFIER;
-                            }
-                            else{
+                            } else {
                                 $state = State::IDENTIFIER;
                             }
                             $this->tokenText .= $ch;
                             break;
                         case State::ID_SUM2:
-                            if ($ch == 'M' || $ch == 'm'){
+                            if ($ch == 'M' || $ch == 'm') {
                                 $state = State::ID_SUM3;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else{
-                                $state = $this->initToken($SimpleToken,$ch);
+                            } else {
+                                $state = $this->initToken($SimpleToken, $ch);
                             }
                             break;
                         case State::ID_SUM3:
-                            if ($this->isBlank($ch)){
+                            if ($this->isBlank($ch)) {
                                 $SimpleToken->type = TokenType::ID_SUM;
                                 $this->tokenText .= $ch;
-                            }
-                            elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
+                            } elseif ($this->isDigit($ch) || $this->isAlpha($ch) || $this->isChinese($ch)) {
                                 # 切换回id状态
                                 $state = State::IDENTIFIER;
                                 $this->tokenText .= $ch;
-                            }
-                            else{
-                                $state = $this->initToken($SimpleToken,$ch);
+                            } else {
+                                $state = $this->initToken($SimpleToken, $ch);
                                 $state = State::IDENTIFIER;
 
                             }
@@ -553,99 +503,81 @@ class SimpleLexer
                 $newState = State::ID_AND1;
             } elseif ($ch == 'O' || $ch == 'o') {   # O 开头暂时用 or 标记
                 $newState = State::ID_OR1;
-            } elseif ($ch == 'M' || $ch == 'm'){    # m 开头暂时用Max表示 ，包含 max、min
+            } elseif ($ch == 'M' || $ch == 'm') {    # m 开头暂时用Max表示 ，包含 max、min
                 $newState = State::ID_MAX1;
-            } elseif ($ch == 'S' || $ch == 's'){    # S 开头暂时用sum表示
+            } elseif ($ch == 'S' || $ch == 's') {    # S 开头暂时用sum表示
                 $newState = State::ID_SUM1;
-            }
-            else {
+            } else {
                 # 进入Id状态
                 $newState = State::IDENTIFIER;
             }
             $SimpleToken->type = TokenType::IDENTIFIER;
             $this->tokenText .= $ch;
-        }
-        elseif ($this->isDigit($ch)) {       # 第一个字符是数字
+        } elseif ($this->isDigit($ch)) {       # 第一个字符是数字
             $newState = State::INT_LITERAL;
             $SimpleToken->type = TokenType::INT_LITERAL;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == ',') { # 第一个字符是逗号
+        } elseif ($ch == ',') { # 第一个字符是逗号
             $newState = State::COMMA;
             $SimpleToken->type = TokenType::COMMA;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '>') {         # 第一个字符是>
+        } elseif ($ch == '>') {         # 第一个字符是>
             $newState = State::GT;
             $SimpleToken->type = TokenType::GT;
             $this->tokenText .= $ch;
-        }
-        elseif($ch == '<'){
+        } elseif ($ch == '<') {
             $newState = State::LT;
             $SimpleToken->type = TokenType::LT;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '+') {
+        } elseif ($ch == '+') {
             $newState = State::ADDITION;
             $SimpleToken->type = TokenType::ADDITION;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '-') {
+        } elseif ($ch == '-') {
             $newState = State::SUBTRACTION;
             $SimpleToken->type = TokenType::SUBTRACTION;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '*') {
+        } elseif ($ch == '*') {
             $newState = State::MULTIPLICATION;
             $SimpleToken->type = TokenType::MULTIPLICATION;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '/') {
+        } elseif ($ch == '/') {
             $newState = State::DIVISION;
             $SimpleToken->type = TokenType::DIVISION;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == ';') {
+        } elseif ($ch == ';') {
             $newState = State::SEMI_COLON;
             $SimpleToken->type = TokenType::SEMI_COLON;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '{') {
+        } elseif ($ch == '{') {
             $newState = State::LARGE_BRACKET_LEFT;
             $SimpleToken->type = TokenType::LARGE_BRACKET_LEFT;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '}') {
+        } elseif ($ch == '}') {
             $newState = State::LARGE_BRACKET_RIGHT;
             $SimpleToken->type = TokenType::LARGE_BRACKET_RIGHT;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '(') {
+        } elseif ($ch == '(') {
             $newState = State::SMALL_BRACKET_LEFT;
             $SimpleToken->type = TokenType::SMALL_BRACKET_LEFT;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == ')') {
+        } elseif ($ch == ')') {
             $newState = State::SMALL_BRACKET_RIGHT;
             $SimpleToken->type = TokenType::SMALL_BRACKET_RIGHT;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '=') {
+        } elseif ($ch == '=') {
             $newState = State::ASSIGNMENT;
             $SimpleToken->type = TokenType::ASSIGNMENT;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == '"') {
+        } elseif ($ch == '"') {
             $newState = State::DOUBLE_QUOTES;
             $SimpleToken->type = TokenType::STRING_LITERAL;
             $this->tokenText .= $ch;
-        }
-        elseif ($ch == "'") {
+        } elseif ($ch == "'") {
             $newState = State::APOSTROPHE;
             $SimpleToken->type = TokenType::STRING_LITERAL;
             $this->tokenText .= $ch;
-        }
-        else {
+        } else {
             # 跳过所有未知的范式
             $newState = State::INITIAL;
         }

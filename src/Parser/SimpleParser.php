@@ -1,28 +1,19 @@
 <?php
-/**
- * @File    :   SimpleParser.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Parser;
+
 use DiyExpress\AST\NodeType;
 use DiyExpress\Formula\IFormulaNode;
 use DiyExpress\Lexer\SimpleLexer;
 use DiyExpress\Token\SimpleTokenReader;
 use DiyExpress\Token\TokenType;
+use Exception;
 
-class SimpleParser{
+class SimpleParser
+{
 
     /**
-     * [
-     *  ['type'=>'','text'=>'','path'=>'','complete'=>0], ...
-     * ]
+     * [['type'=>'','text'=>'','path'=>'','complete'=>0], ...]
      * @var null |array
      */
     public $store_list = null;
@@ -32,8 +23,14 @@ class SimpleParser{
      */
     public $struct_node_list = [];
 
+    /**
+     * @var null
+     */
     public $parse_error_tip = null;
 
+    /**
+     * @var null
+     */
     public $field_list = null;
 
     /**
@@ -100,7 +97,7 @@ class SimpleParser{
      * 解析脚本
      * @param $script
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function parse($script): array
     {
@@ -110,7 +107,7 @@ class SimpleParser{
         $tokens = $lexer->tokenize($script);
         # 处理成ast节点树
         $result = $this->DiyFormulaStmtParse($tokens) ?: array();
-        if ($result){
+        if ($result) {
             $result['tokens'] = $tokens;
         }
         return $result;
@@ -120,7 +117,7 @@ class SimpleParser{
      * AST的根节点，解析的入口。
      * @param SimpleTokenReader $tokens
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function DiyFormulaStmtParse(SimpleTokenReader $tokens): array
     {
@@ -237,7 +234,7 @@ class SimpleParser{
      * 扫描需要解析的tokens
      * @param SimpleTokenReader $tokens
      * @return array|null
-     * @throws \Exception
+     * @throws Exception
      */
     private function scanTokens(SimpleTokenReader $tokens)
     {
@@ -300,7 +297,7 @@ class SimpleParser{
      * 结构规则 找到左右两个的变量或者表达式，缺失任何一个都抛错
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function structComputeTag(SimpleTokenReader $tokens)
     {
@@ -391,7 +388,7 @@ class SimpleParser{
      * 遇到左括号或者if条件，就重置开始 SMALL_BRACKET_LEFT、ID_IF
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function structSmallBracketOpen(SimpleTokenReader $tokens)
     {
@@ -402,7 +399,6 @@ class SimpleParser{
             # 校验操作符前后是否右变量或者表达式
             $preToken = $tokens->peekPre();
             if ($preToken == null || !in_array($preToken->type, $tokenType->openSmallBracket_inLeft)) {
-//                echo "左侧缺失操作符";
                 $this->parse_error_tip = '左侧缺失操作符';
                 return;
             }
@@ -427,7 +423,7 @@ class SimpleParser{
      * 闭合括号后还有未处理的tokens，需要往上回溯一层节点再继续执行scan。如果没有了，需要回溯上层并验证节点是否完成。
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function structSmallBracketClose(SimpleTokenReader $tokens)
     {
@@ -470,7 +466,7 @@ class SimpleParser{
      * 遇到左括号或者自身的if就重置开始 SMALL_BRACKET_LEFT、ID_IF
      * @param SimpleTokenReader $tokens
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function structIfStmt(SimpleTokenReader $tokens)
     {
@@ -478,7 +474,7 @@ class SimpleParser{
         $tokenType = new TokenType();
         if ($token != null && $token->type == $tokenType::ID_IF) {
             $preToken = $tokens->peekPre();
-            if ($preToken == null || !in_array($preToken->type, array_merge($tokenType->tag_array, [$tokenType::ASSIGNMENT, $tokenType::ID_IF, $tokenType::SMALL_BRACKET_LEFT,$tokenType::COMMA]))) {
+            if ($preToken == null || !in_array($preToken->type, array_merge($tokenType->tag_array, [$tokenType::ASSIGNMENT, $tokenType::ID_IF, $tokenType::SMALL_BRACKET_LEFT, $tokenType::COMMA]))) {
                 $this->parse_error_tip = 'if符号左侧参数错误';
                 return;
             }
@@ -500,7 +496,7 @@ class SimpleParser{
      * 普通表达式结构的处理，可能是变量，可能是数值，可能是字符串等
      * @param $tokens
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function structExpression($tokens)
     {
