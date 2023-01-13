@@ -29,7 +29,7 @@ class SimpleVM
         $dirty_node_list_count = count($nodeList_dirty); # 节点数组长度
         # 处理的result和assign
         if (is_null($result_flag) || is_null($assign_flag)) {
-            foreach ($nodeList_dirty as $dirty_result_key => &$dirty_result_value) {
+            foreach ($nodeList_dirty as $dirty_result_key => $dirty_result_value) {
                 if ($dirty_result_value->structType == $astNodeType::RESULT_STMT) {
                     if (!$result_flag) {
                         unset($nodeList_dirty[$dirty_result_key]); # 用过就销毁
@@ -41,7 +41,7 @@ class SimpleVM
             }
 
             # 处理assign等号问题
-            foreach ($nodeList_dirty as $dirty_assign_key => &$dirty_assign_value) {
+            foreach ($nodeList_dirty as $dirty_assign_key => $dirty_assign_value) {
                 if ($dirty_assign_value->structType == $astNodeType::ASSIGNMENT_STMT) {
                     if (!$assign_flag) {
                         $assign_flag = true;
@@ -54,7 +54,7 @@ class SimpleVM
         }
 
         # 处理if层级，连带if的括号也处理掉，以免造成括号优先级的干扰 DONE
-        foreach ($nodeList_dirty as $dirty_if_key => &$dirty_if_value) {
+        foreach ($nodeList_dirty as $dirty_if_key => $dirty_if_value) {
             if ($dirty_if_value->structType == $astNodeType::IF_STMT) {
                 $if_stmt_tmp = []; # 每遇到一个if就初始化一次。
                 $if_condition_tmp = $if_then_tmp = $if_else_tmp = [];

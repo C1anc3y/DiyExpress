@@ -3,12 +3,14 @@
 error_reporting(E_ERROR);
 require __DIR__ . '/../vendor/autoload.php';
 
+// 初始化表达式计算器
+$calculatorCls = new DiyExpress\Calculator();
+
 // // demo express.
 // $script_list = [
 //     'y=if((x+30)*0.5>100,x+60,x-90)+50',
 //     "z=if(((x+30)*0.5)>100,'真值','假值')"
 // ];
-$calculatorCls = new DiyExpress\Calculator();
 // $result = $calculatorCls->verifyFormFormula($script_list);
 // var_dump($result);
 // die;
@@ -47,13 +49,15 @@ $data = [
 ];
 var_dump($data);
 $dirty_express = "销售评级=if(((到款+30)*0.5)>100,优秀,一般)"; // 原本的自定义表达式，在使用计算的时候，需要特殊处理一下，将变量用双花括号包起来，如下：
-$diy_express = "{{销售评级}}=if((({{到款}}+30)*0.5)>1000,优秀,一般)+10";
+$diy_express = "{{销售评级}}=if((({{到款}}+30)*0.5)>1000,优秀,一般)";
 var_dump($diy_express);
 
-try {
-    $res = $calculatorCls->executeFormFormula($diy_express, $data, '销售评级');
-} catch (Exception $e) {
-    $res = [];
-}
+//try {
+//    $res = $calculatorCls->executeFormFormula($diy_express, $data, '销售评级');
+//} catch (Exception $e) {
+//    echo $e->getMessage();
+//    $res = [];
+//}
+$res = $calculatorCls->executeFormFormula($diy_express, $data, '销售评级');
 var_dump(['销售评级' => $res]);
 die;
