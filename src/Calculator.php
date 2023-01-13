@@ -1,22 +1,12 @@
 <?php
 
-/**
- * @File    :   Calculator.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
-
 namespace DiyExpress;
 
 use DiyExpress\AST\NodeType;
 use DiyExpress\Formula\SimpleFormula;
 use DiyExpress\Parser\SimpleParser;
 use DiyExpress\VM\SimpleVM;
+use Exception;
 
 class Calculator
 {
@@ -66,7 +56,7 @@ class Calculator
             unset($res_field);
             $vmRes = $vm->scanNodeList($nodeList['data']);
             if ($vmRes['error_msg']) {
-                $result =  false;
+                $result = false;
             }
             $treeList = $vmRes['nodeList'];
             $treeList = $this->dealWithAdapt($treeList);
@@ -85,8 +75,9 @@ class Calculator
      * 执行表达式
      * @param string $token 自定义表达式，其中的变量需要用双花阔号包起来
      * @param array $data 已知变量的赋值数组
-     * @param string|int $rule_result_filed_id 表达式的结果字段id或者标识
+     * @param int $rule_result_field_id 表达式的结果字段id或者标识
      * @return mixed
+     * @throws Exception
      */
     public function executeFormFormula($token, $data, $rule_result_field_id)
     {
@@ -151,14 +142,14 @@ class Calculator
      * calculator tree
      * @param $nodeList
      * @param int $level
-     * @return array|int
+     * @return mixed
      */
     public function dealWithOpera(&$nodeList, $level = 20)
     {
         $astNodeType = new NodeType();
         $simpleScript = new SimpleFormula();
         $first_cal_tag = 1;
-        $first_op_list  = [];
+        $first_op_list = [];
 
         if (is_array($nodeList)) {
             foreach ($nodeList as $first_k => &$first_v) {
@@ -213,7 +204,7 @@ class Calculator
 
             // # 循环处理if的结果
             $if_cal_tag = 1;
-            $if_op_list  = [];
+            $if_op_list = [];
             foreach ($nodeList as $if_k => &$if_v) {
                 if (in_array($if_k, ['condition', 'then', 'else'])) {
                     if (is_array($if_v)) {

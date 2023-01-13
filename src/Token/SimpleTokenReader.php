@@ -1,18 +1,9 @@
 <?php
-/**
- * @File    :   SimpleTokenReader.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Token;
 
-class SimpleTokenReader implements ITokenReader{
+class SimpleTokenReader implements ITokenReader
+{
     /**
      * @var  null|array $tokens List<IToken>
      */
@@ -21,7 +12,7 @@ class SimpleTokenReader implements ITokenReader{
     /**
      * @var int $pos
      */
-    public $pos = 0;
+    public int $pos = 0;
 
     /**
      * 聚合起来的expression
@@ -31,7 +22,7 @@ class SimpleTokenReader implements ITokenReader{
 
     /**
      * SimpleTokenReader constructor.
-     * @param SimpleToken $tokens List<IToken>
+     * @param array $tokens List<IToken>
      */
     public function __construct(array $tokens)
     {

@@ -1,22 +1,17 @@
 <?php
-/**
- * @File    :   SimpleFormula.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Formula;
+
 use DiyExpress\AST\NodeType;
 use DiyExpress\Exception\RuntimeException;
 
-class SimpleFormula{
-    // 构造一个初始化的执行器
-    public $opera_struct_list = [
+class SimpleFormula
+{
+
+    /**
+     * @var array 构造一个初始化的执行器
+     */
+    public array $opera_struct_list = [
         NodeType::ADDITION, # 加法
         NodeType::SUBTRACTION, # 减法
         NodeType::MULTIPLICATION, # 乘法
@@ -31,7 +26,7 @@ class SimpleFormula{
     ];
 
 
-    public $func_struct_list = [
+    public array $func_struct_list = [
         NodeType::IF_STMT,
 //        NodeType::SUM_STMT,
 //        NodeType::AVG_STMT,
@@ -40,31 +35,32 @@ class SimpleFormula{
     ];
 
 
-    public function calculator($structType,$args){
+    public function calculator($structType, $args)
+    {
         if (!in_array($structType, array_merge($this->opera_struct_list, $this->func_struct_list))) {
             # 验证是否属于定义的运算结构体
             return 0;
         }
-        if (in_array($structType,$this->opera_struct_list)){
-            $left = $args['left']?:0;
-            $right = $args['right']?:0;
-            $method_name = $structType.'Struct';
+        if (in_array($structType, $this->opera_struct_list)) {
+            $left = $args['left'] ?: 0;
+            $right = $args['right'] ?: 0;
+            $method_name = $structType . 'Struct';
             if ($method_name && method_exists($this, $method_name)) {
                 return $this->$method_name($left, $right);
-            }else{
+            } else {
                 return 0;
             }
-        }elseif($structType==NodeType::IF_STMT){
+        } elseif ($structType == NodeType::IF_STMT) {
             $condition = $args['condition'];
             $then = $args['then'];
             $else = $args['else'];
-            $method_name = $structType.'Struct';
+            $method_name = $structType . 'Struct';
             if ($method_name && method_exists($this, $method_name)) {
-                return $this->$method_name($condition, $then,$else);
-            }else{
+                return $this->$method_name($condition, $then, $else);
+            } else {
                 return 0;
             }
-        }else{
+        } else {
             # 其他函数暂不支持
             return 0;
         }
@@ -79,7 +75,7 @@ class SimpleFormula{
      * @param $else
      * @return mixed
      */
-    public function IfStmtStruct($condition, $then,$else)
+    public function IfStmtStruct($condition, $then, $else)
     {
         if ($condition) {
             return $then;
@@ -144,10 +140,10 @@ class SimpleFormula{
      */
     public function LTStruct($left, $right)
     {
-        if (!is_numeric($left) || !is_numeric($right)){
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        return ($left < $right)?1:0;
+        return ($left < $right) ? 1 : 0;
     }
 
     /**
@@ -158,23 +154,24 @@ class SimpleFormula{
      */
     public function LEStruct($left, $right)
     {
-        if (!is_numeric($left) || !is_numeric($right)){
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        return ($left <= $right)?1:0;
+        return ($left <= $right) ? 1 : 0;
     }
 
     /**
      * 定义 great than > 大于结构体
      * @param $left
      * @param $right
+     * @return mixed
      */
     public function GTStruct($left, $right)
     {
-        if (!is_numeric($left) || !is_numeric($right)){
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        return ($left > $right)?1:0;
+        return ($left > $right) ? 1 : 0;
     }
 
     /**
@@ -185,10 +182,10 @@ class SimpleFormula{
      */
     public function GEStruct($left, $right)
     {
-        if (!is_numeric($left) || !is_numeric($right)){
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        return ($left >= $right)?1:0;
+        return ($left >= $right) ? 1 : 0;
     }
 
     /**
@@ -199,14 +196,14 @@ class SimpleFormula{
      */
     public function EQStruct($left, $right)
     {
-        if (is_numeric($left) && is_numeric($right)){
-            return ($left == $right)?1:0;
-        }elseif(is_string($left) && is_string($right)){
+        if (is_numeric($left) && is_numeric($right)) {
+            return ($left == $right) ? 1 : 0;
+        } elseif (is_string($left) && is_string($right)) {
             # 过滤掉字符的引号
-            $left = trim($left,'\'"');
-            $right = trim($right,'\'"');
-            return ($left == $right)?1:0;
-        }else{
+            $left = trim($left, '\'"');
+            $right = trim($right, '\'"');
+            return ($left == $right) ? 1 : 0;
+        } else {
             return 0;
         }
     }
@@ -217,11 +214,12 @@ class SimpleFormula{
      * @param $right
      * @return int
      */
-    public function AdditionStruct($left,$right){
-        if (!is_numeric($left) || !is_numeric($right)){
+    public function AdditionStruct($left, $right)
+    {
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        return ($left + $right)?:0;
+        return ($left + $right) ?: 0;
     }
 
     /**
@@ -230,11 +228,12 @@ class SimpleFormula{
      * @param $right
      * @return int|string
      */
-    public function SubtractionStruct($left,$right){
-        if (!is_numeric($left) || !is_numeric($right)){
+    public function SubtractionStruct($left, $right)
+    {
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        return ($left-$right)?:0;
+        return ($left - $right) ?: 0;
     }
 
     /**
@@ -243,11 +242,12 @@ class SimpleFormula{
      * @param $right
      * @return float|int
      */
-    public function MultiplicationStruct($left,$right){
-        if (!is_numeric($left) || !is_numeric($right)){
+    public function MultiplicationStruct($left, $right)
+    {
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        return ($left * $right)?:0;
+        return ($left * $right) ?: 0;
     }
 
     /**
@@ -256,14 +256,15 @@ class SimpleFormula{
      * @param $right
      * @return float|int
      */
-    public function DivisionStruct($left,$right){
-        if (!is_numeric($left) || !is_numeric($right)){
+    public function DivisionStruct($left, $right)
+    {
+        if (!is_numeric($left) || !is_numeric($right)) {
             return 0;
         }
-        if ($right==0){
+        if ($right == 0) {
             return 0;
         }
-        return ($left / $right)?:0;
+        return ($left / $right) ?: 0;
     }
 
     /**
@@ -272,10 +273,10 @@ class SimpleFormula{
      * @param $right
      * @return int
      */
-    public function Id_AndStruct($left,$right): int
+    public function Id_AndStruct($left, $right): int
     {
         $res = ($left && $right);
-        return $res?1:0;
+        return $res ? 1 : 0;
     }
 
     /**
@@ -284,10 +285,10 @@ class SimpleFormula{
      * @param $right
      * @return int
      */
-    public function Id_OrStruct($left,$right): int
+    public function Id_OrStruct($left, $right): int
     {
         $res = ($left || $right);
-        return $res?1:0;
+        return $res ? 1 : 0;
     }
 
 }

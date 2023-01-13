@@ -1,15 +1,5 @@
 <?php
 
-/**
- * @File    :   INode.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 namespace DiyExpress\AST;
 
 interface INode
@@ -25,8 +15,6 @@ interface INode
      * @return mixed INode
      */
     public function getChildren();
-
-    //
 
     /**
      * AST类型

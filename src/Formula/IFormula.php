@@ -1,17 +1,8 @@
 <?php
-/**
- * @File    :   SimpleFormula.php
- * @Author  :   ClanceyHuang
- * @Refer   :   unknown
- * @Desc    :   ...
- * @Version :   PHP7.x
- * @Contact :   ClanceyHuang@outlook.com
- * @Site    :   http://debug.cool
- */
-
 
 namespace DiyExpress\Formula;
-interface IFormula{
+interface IFormula
+{
     /**
      * 结构的类型
      * @return string|null $structType
